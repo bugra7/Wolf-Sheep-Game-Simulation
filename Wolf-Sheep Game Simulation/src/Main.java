@@ -6,10 +6,11 @@ public class Main {
 	
 	private static boolean isWolfDead = false;
 	private static boolean isSheepDead = false;
+	static long moveCount = 0;
 	
 	public static void main(String[] args) {
 		
-		List<String> corners = new ArrayList();
+		List<String> corners = new ArrayList<String>();
 		
 		corners.add("A");
 		corners.add("B");
@@ -25,13 +26,14 @@ public class Main {
 		for(int sheepStartIndex = 1; sheepStartIndex < corners.size(); sheepStartIndex++) {
 			
 			long wolfDeadCount = 0;
+			moveCount = 0;
 			
 			for(int gameNo = 1; gameNo <= 10000000; gameNo++) {
 				
 				isWolfDead = false;
 				isSheepDead = false;
 				
-				List<String> wolfTraveled = new ArrayList();
+				List<String> wolfTraveled = new ArrayList<String>();
 				wolfTraveled.add("A");
 				
 				String wolfCurrentCorner = corners.get(0);
@@ -46,10 +48,14 @@ public class Main {
 				if(isWolfDead)	wolfDeadCount++;
 			}
 			Float winRatio = (float)wolfDeadCount/100000;
+			Float averageMoveNo = (float)moveCount/10000000;
 			
 			System.out.println("Sheep on Point : " + corners.get(sheepStartIndex));
 			System.out.print("Win Ratio : %");
-			System.out.printf("%.2f", winRatio);
+			System.out.printf("%.3f", winRatio);
+			System.out.println("");
+			System.out.print("Average wolf move count : ");
+			System.out.printf("%.3f", averageMoveNo);
 			System.out.println("\n");
 		}
 	}
@@ -98,6 +104,7 @@ public class Main {
 	}
 
 	public static int getRandomDirection(int index){
+		moveCount++;
 	    Random random = new Random();
 	    int randNo = random.ints(0,(1+1)).findFirst().getAsInt();
 	    if(randNo == 0)	return goClockWise(index);
